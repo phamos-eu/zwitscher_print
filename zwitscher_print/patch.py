@@ -33,25 +33,28 @@ def apply():
 
 		from zwitscher_print.chrome_stamp import resolve_stamp, stamp_pdf_bytes
 
-		stamp_path = resolve_stamp(print_format)
-		if not stamp_path:
+		stamp_image = resolve_stamp(print_format)
+		if not stamp_image:
+			frappe.log_error(
+				message=f"no stamp image found for print format {print_format!r} "
+				"(expected a public File named per STAMPS, or stationery/ fallback)",
+				title="zwitscher_print: stamp image missing",
+			)
 			return result
 
 		try:
 			if isinstance(result, (bytes, bytearray)):
-				return stamp_pdf_bytes(bytes(result), stamp_path)
-			# result is a PdfWriter (output was passed in): re-stamp its pages
+				return stamp_pdf_bytes(bytes(result), stamp_image)
+			# result is a PdfWriter (output= was passed in): re-stamp its pages
 			import io
 
 			from pypdf import PdfReader, PdfWriter
 
 			buf = io.BytesIO()
 			result.write(buf)
-			stamped = stamp_pdf_bytes(buf.getvalue(), stamp_path)
-			result.pages.clear() if hasattr(result, "pages") else None
-			new = PdfReader(io.BytesIO(stamped))
+			stamped = stamp_pdf_bytes(buf.getvalue(), stamp_image)
 			fresh = PdfWriter()
-			fresh.append_pages_from_reader(new)
+			fresh.append_pages_from_reader(PdfReader(io.BytesIO(stamped)))
 			return fresh
 		except Exception:
 			frappe.log_error(title="zwitscher_print: letterhead stamp failed")
