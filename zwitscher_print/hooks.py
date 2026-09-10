@@ -1,8 +1,8 @@
 app_name = "zwitscher_print"
 app_title = "zwitscher Print"
-app_publisher = "zwitscher IT"
+app_publisher = "phamos GmbH"
 app_description = "Full-page letterhead stamp for the zwitscher Angebot PDF (seam-free corners)."
-app_email = "support@zwitscher.it"
+app_email = "support@phamos.eu"
 app_license = "MIT"
 
 # Wrap frappe.utils.pdf.get_chrome_pdf so the finished Chrome PDF for a registered

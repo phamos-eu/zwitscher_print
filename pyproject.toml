@@ -1,7 +1,7 @@
 [project]
 name = "zwitscher_print"
 authors = [
-    { name = "zwitscher IT", email = "support@zwitscher.it" },
+    { name = "phamos GmbH", email = "support@phamos.eu" },
 ]
 description = "Seam-free Angebot PDF: full-page letterhead stamp over frappe's chrome generator."
 requires-python = ">=3.10"
