@@ -11,9 +11,11 @@ import frappe
 _STATIONERY_DIR = os.path.join(os.path.dirname(__file__), "stationery")
 
 # print format name -> stamp image basename (a public File named exactly this,
-# with a copy in stationery/ as a fallback)
+# with a copy in stationery/ as a fallback). The zwitscher letterhead is the
+# same artwork for every document type, so they share one image.
 STAMPS = {
 	"zwitscher Angebot": "zwitscher-angebot-a4.png",
+	"zwitscher Lieferschein": "zwitscher-angebot-a4.png",
 }
 
 
