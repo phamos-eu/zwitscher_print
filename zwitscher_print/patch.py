@@ -59,3 +59,14 @@ def apply():
 
 	get_chrome_pdf.__dict__[_PATCHED_FLAG] = True
 	pdf_mod.get_chrome_pdf = get_chrome_pdf
+
+
+# hook entry points — `before_request` / `before_job` fire on a warm site where
+# `frappe.get_hooks` serves a cached dict and never re-imports hooks.py, so the
+# module-level call there is not enough on its own. `apply()` is idempotent.
+def before_request(*args, **kwargs):
+	apply()
+
+
+def before_job(*args, **kwargs):
+	apply()
