@@ -1,17 +1,4 @@
-"""Wrap `frappe.utils.pdf.get_chrome_pdf` so that the finished Chrome PDF for a
-registered print format gets a full-page letterhead painted behind every page.
-
-Why a wrapper and not a `pdf_generator` hook:
-  * the print format stays on the stock `pdf_generator = "chrome"`, so the
-    normal single-pass pipeline runs (page numbers, bands, pagination);
-  * we never call `get_chrome_pdf` a second time from inside the request —
-    re-entering frappe's chrome pipeline within one request intermittently
-    corrupts the page-number footer clones.
-
-`frappe.call` resolves the `pdf_generator` hook by dotted string at call time,
-so replacing the attribute on the module is enough for the desk PDF button,
-`frappe.get_print(..., as_pdf=True)` and `attach_print` alike.
-"""
+"""Wrap `get_chrome_pdf` to stamp a full-page letterhead behind every page."""
 
 import frappe
 
@@ -35,17 +22,12 @@ def apply():
 
 		stamp_image = resolve_stamp(print_format)
 		if not stamp_image:
-			frappe.log_error(
-				message=f"no stamp image found for print format {print_format!r} "
-				"(expected a public File named per STAMPS, or stationery/ fallback)",
-				title="zwitscher_print: stamp image missing",
-			)
 			return result
 
 		try:
 			if isinstance(result, (bytes, bytearray)):
 				return stamp_pdf_bytes(bytes(result), stamp_image)
-			# result is a PdfWriter (output= was passed in): re-stamp its pages
+
 			import io
 
 			from pypdf import PdfReader, PdfWriter
@@ -64,9 +46,6 @@ def apply():
 	pdf_mod.get_chrome_pdf = get_chrome_pdf
 
 
-# hook entry points — `before_request` / `before_job` fire on a warm site where
-# `frappe.get_hooks` serves a cached dict and never re-imports hooks.py, so the
-# module-level call there is not enough on its own. `apply()` is idempotent.
 def before_request(*args, **kwargs):
 	apply()
 
