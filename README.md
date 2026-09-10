@@ -64,4 +64,3 @@ bench --site <site> console
 
 Drop `<name>.png` (A4, full bleed) into `zwitscher_print/stationery/` and add a
 `"Print Format Name": "<name>.png"` line to `STAMPS`.
-# zwitscher_print
