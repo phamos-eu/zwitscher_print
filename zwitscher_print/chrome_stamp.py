@@ -16,6 +16,7 @@ _STATIONERY_DIR = os.path.join(os.path.dirname(__file__), "stationery")
 STAMPS = {
 	"zwitscher Angebot": "zwitscher-angebot-a4.png",
 	"zwitscher Lieferschein": "zwitscher-angebot-a4.png",
+	"zwitscher Rechnung": "zwitscher-angebot-a4.png",
 }
 
 

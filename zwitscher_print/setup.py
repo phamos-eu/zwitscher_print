@@ -1,7 +1,7 @@
 import frappe
 
 # formats that must stay on the stock chrome generator for the wrapper to fire
-_FORMATS = ["zwitscher Angebot", "zwitscher Lieferschein"]
+_FORMATS = ["zwitscher Angebot", "zwitscher Lieferschein", "zwitscher Rechnung"]
 
 
 def after_install():
